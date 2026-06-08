@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Fornecedor</title>
+    <link rel="stylesheet" href="../style.css">
+
+    <script>
+        if (localStorage.getItem('loggedIn') !== 'true') {
+            window.location.href = 'login.html';
+        }
+    </script>
+</head>
+
+<body>
+
+    <header class="topbar">
+        <div class="brand">Edição de Fornecedor</div>
+        <nav class="crud-navbar">
+            <div class="crud-links">
+                <a href="./cadastrar.html">Cadastrar</a>
+                <a href="./editar.html">Editar</a>
+                <a href="./visualizar.html">Visualizar</a>
+                <a href="../dashboard.html">Voltar</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="page">
+
+        <!-- BUSCA POR ID -->
+        <section class="search-panel">
+            <h2>Buscar Fornecedor</h2>
+
+            <div class="field-row">
+                <label for="search-id">ID do Fornecedor</label>
+                <input id="search-id" type="number" placeholder="Digite o ID">
+            </div>
+
+            <button type="button" id="btn-search" class="small-button" style="margin-top: 1em;">
+                Buscar
+            </button>
+            <button type="button" id="btn-ativar" class="small-button">
+                Ativar Fornecedor
+            </button>
+            <button type="button" id="btn-delete" class="small-button">
+                Inativar Fornecedor
+            </button>
+        </section>
+
+        <!-- FORMULÁRIO DE EDIÇÃO -->
+        <section class="panel active" id="fornecedor">
+
+            <h2>Atualizar Fornecedor</h2>
+
+            <form id="form-fornecedor" class="entity-form">
+
+                <div class="field-row">
+                    <label for="id">ID</label>
+                    <input id="id" name="id" type="number" required readonly>
+                </div>
+
+                <div class="field-row">
+                    <label for="nome">Nome</label>
+                    <input id="nome" name="nome" type="text">
+                </div>
+
+                <div class="field-row">
+                    <label for="cnpj">CNPJ</label>
+                    <input id="cnpj" name="cnpj" type="text" maxlength="18">
+                </div>
+
+                <div class="field-row">
+                    <label for="email">Email</label>
+                    <input id="email" name="email" type="email">
+                </div>
+
+                <div class="field-row">
+                    <label for="telefone">Telefone</label>
+                    <input id="telefone" name="telefone" type="text">
+                </div>
+
+                <div class="field-row">
+                    <label for="descricao">Descrição</label>
+                    <input id="descricao" name="descricao" type="text">
+                </div>
+
+                <button type="submit">
+                    Atualizar Fornecedor
+                </button>
+
+            </form>
+        </section>
+
+    </main>
+
+    <aside class="output-panel">
+        <h3>Resultado</h3>
+        <pre id="output">Aguardando ação...</pre>
+    </aside>
+
+    <script src="editar.js"></script>
+    <script src="../utils.js"></script>
+
+</body>
+
+</html>

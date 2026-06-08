@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Cliente</title>
+    <link rel="stylesheet" href="../style.css">
+
+    <script>
+        if (localStorage.getItem('loggedIn') !== 'true') {
+            window.location.href = '../index.html';
+        }
+    </script>
+</head>
+
+<body>
+
+    <header class="topbar">
+        <div class="brand">Cadastro de Cliente</div>
+        <nav class="crud-navbar">
+            <div class="crud-links">
+                <a href="./cadastrar.html">Cadastrar</a>
+                <a href="./editar.html">Editar</a>
+                <a href="./visualizar.html">Visualizar</a>
+                <a href="../dashboard.html">Voltar</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="page">
+
+        <!-- CLIENTE FORM -->
+        <section class="panel active">
+
+            <h2>Novo Cliente</h2>
+
+            <form id="form-cliente" class="entity-form">
+
+                <div class="field-row">
+                    <label for="nome">Nome</label>
+                    <input id="nome" name="nome" type="text" required>
+                </div>
+
+                <div class="field-row">
+                    <label for="sobrenome">Sobrenome</label>
+                    <input id="sobrenome" name="sobrenome" type="text" required>
+                </div>
+
+                <div class="field-row">
+                    <label for="cpf">CPF</label>
+                    <input id="cpf" name="cpf" type="text" required>
+                </div>
+
+                <div class="field-row">
+                    <label for="statusId">Status</label>
+                    <select id="statusId" name="statusId">
+                        <option value="1">ATIVO</option>
+                        <option value="2">INATIVO</option>
+                        <option value="3">BLOQUEADO</option>
+                    </select>
+                </div>
+
+                <div class="field-row">
+                    <label for="dataNascimento">Data de Nascimento</label>
+                    <input id="dataNascimento" name="dataNascimento" required>
+                </div>
+
+                <div class="field-row">
+                    <label for="email">Email</label>
+                    <input id="email" name="email" type="email" required>
+                </div>
+
+                <div class="field-row">
+                    <label for="telefone">Telefone</label>
+                    <input id="telefone" name="telefone" type="text" value="+55" required>
+                </div>
+
+                <div class="field-row">
+                    <label for="cep">CEP</label>
+                    <input id="cep" name="cep" type="text" required>
+                </div>
+
+                <div class="field-row">
+                    <label for="numero">Número</label>
+                    <input id="numero" name="numero" type="text" required>
+                </div>
+
+                <div class="field-row">
+                    <label for="logradouro">Logradouro</label>
+                    <input id="logradouro" name="logradouro" type="text" required>
+                </div>
+
+                <div class="field-row">
+                    <label for="bairro">Bairro</label>
+                    <input id="bairro" name="bairro" type="text" required>
+                </div>
+
+                <div class="field-row">
+                    <label for="cidade">Cidade</label>
+                    <input id="cidade" name="cidade" type="text" required>
+                </div>
+
+                <div class="field-row">
+                    <label for="uf">UF</label>
+                    <input id="uf" name="uf" type="text" maxlength="2" required>
+                </div>
+
+                <div class="field-row">
+                    <label for="complemento">Complemento</label>
+                    <input id="complemento" name="complemento" type="text">
+                </div>
+
+                <div class="field-row">
+                    <label for="login">Login</label>
+                    <input id="login" name="login" type="text" required>
+                </div>
+
+                <div class="field-row">
+                    <label for="senha">Senha</label>
+                    <input id="senha" name="hashSenha" type="password" required>
+                </div>
+
+                <button type="submit">
+                    Salvar Cliente
+                </button>
+            </form>
+        </section>
+
+    </main>
+
+    <aside class="output-panel">
+        <h3>Resultado</h3>
+        <pre id="output">Aguardando envio...</pre>
+    </aside>
+
+    <script src="cadastrar.js"></script>
+    <script src="../utils.js"></script>
+
+</body>
+
+</html>

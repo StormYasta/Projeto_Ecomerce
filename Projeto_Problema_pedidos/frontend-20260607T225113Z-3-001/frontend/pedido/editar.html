@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Pedido</title>
+    <link rel="stylesheet" href="../style.css">
+
+    <script>
+        if (localStorage.getItem('loggedIn') !== 'true') {
+            window.location.href = '../index.html';
+        }
+    </script>
+</head>
+
+<body>
+
+    <header class="topbar">
+        <div class="brand">Edição de Pedido</div>
+        <nav class="crud-navbar">
+            <div class="crud-links">
+                <a href="./cadastrar.html">Cadastrar</a>
+                <a href="./editar.html">Editar</a>
+                <a href="./visualizar.html">Visualizar</a>
+                <a href="../dashboard.html">Voltar</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="page">
+
+        <section class="search-panel">
+            <h2>Buscar Pedido</h2>
+
+            <div class="field-row">
+                <label for="search-id">ID do Pedido</label>
+                <input id="search-id" type="number" placeholder="Digite o ID">
+            </div>
+
+            <button type="button" id="btn-search" class="small-button" style="margin-top: 1em;">
+                Buscar
+            </button>
+        </section>
+
+        <section class="panel active" id="pedido">
+
+            <h2>Atualizar Pedido</h2>
+
+            <form id="form-pedido" class="entity-form">
+
+                <div class="field-row">
+                    <label for="id">ID</label>
+                    <input id="id" name="id" type="number" required readonly>
+                </div>
+
+                <div class="field-row">
+                    <label for="clienteId">Cliente</label>
+                    <select id="clienteId" name="clienteId">
+                        <option value="" disabled selected>Carregando clientes...</option>
+                    </select>
+                </div>
+
+                <div class="field-row">
+                    <label for="produtoId">Produto</label>
+                    <select id="produtoId" name="produtoId">
+                        <option value="" disabled selected>Carregando produtos...</option>
+                    </select>
+                </div>
+
+                <div class="field-row">
+                    <label for="statusId">Status</label>
+                    <select id="statusId" name="statusId">
+                        <option value="" disabled selected>Carregando status...</option>
+                    </select>
+                </div>
+
+                <div class="field-row">
+                    <label for="dataPedido">Data do Pedido</label>
+                    <input id="dataPedido" name="dataPedido" placeholder="dd/mm/aaaa">
+                </div>
+
+                <button type="submit">
+                    Atualizar Pedido
+                </button>
+            </form>
+
+        </section>
+
+    </main>
+
+    <aside class="output-panel">
+        <h3>Resultado</h3>
+        <pre id="output">Aguardando ação...</pre>
+    </aside>
+
+    <script src="editar.js"></script>
+    <script src="../utils.js"></script>
+
+</body>
+
+</html>

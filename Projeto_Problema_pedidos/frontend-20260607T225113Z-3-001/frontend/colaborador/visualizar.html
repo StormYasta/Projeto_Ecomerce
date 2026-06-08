@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualizar Cadastros</title>
+    <link rel="stylesheet" href="../style.css">
+    <script>
+        if (localStorage.getItem('loggedIn') !== 'true') {
+            window.location.href = '../index.html';
+        }
+    </script>
+</head>
+
+<body>
+    <header class="topbar">
+        <div class="brand">Visualizar Cadastros</div>
+        <nav class="nav-bar">
+            <div class="crud-links">
+                <a href="./cadastrar.html">Cadastrar</a>
+                <a href="./editar.html">Editar</a>
+                <a href="./visualizar.html">Visualizar</a>
+                <a href="../dashboard.html">Voltar</a>
+            </div>
+        </nav>
+    </header>
+    <main class="page">
+        <section class="panel active" id="view-panel">
+            <h2>Informações Cadastradas</h2>
+            <div class="view-actions">
+                <button id="refresh-data" type="button" class="small-button">Atualizar</button>
+                <button id="clear-data" type="button" class="small-button">Limpar dados locais</button>
+            </div>
+            <div id="view-content" class="view-content"></div>
+        </section>
+    </main>
+    <aside class="output-panel">
+        <h3>Terminal</h3>
+        <pre id="view-output">Nenhum registro carregado.</pre>
+    </aside>
+    <script src="visualizar.js"></script>
+</body>
+
+</html>
