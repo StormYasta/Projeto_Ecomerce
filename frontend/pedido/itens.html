@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Itens do Pedido</title>
+    <link rel="stylesheet" href="../style.css">
+
+    <script>
+        if (localStorage.getItem('loggedIn') !== 'true') {
+            window.location.href = 'login.html';
+        }
+    </script>
+</head>
+
+<body>
+
+    <header class="topbar">
+        <div class="brand">Itens do Pedido</div>
+        <nav class="crud-navbar">
+            <div class="crud-links">
+                <a href="./cadastrar.html">Novo Pedido</a>
+                <a href="./itens.html">Itens do Pedido</a>
+                <a href="./status.html">Alterar Status</a>
+                <a href="./visualizar.html">Visualizar</a>
+                <a href="../dashboard.html">Voltar</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="page">
+
+        <!-- BUSCA DO PEDIDO -->
+        <section class="search-panel">
+            <h2>Selecionar Pedido</h2>
+
+            <div class="field-row">
+                <label for="search-pedido-id">ID do Pedido</label>
+                <input id="search-pedido-id" type="number" min="1" placeholder="Digite o ID do pedido">
+            </div>
+
+            <button type="button" id="btn-buscar-pedido" class="small-button" style="margin-top: 1em;">
+                Carregar Pedido
+            </button>
+        </section>
+
+        <!-- ITENS ATUAIS DO PEDIDO -->
+        <section class="panel active" id="section-itens">
+            <h2>Produtos no Pedido <span id="label-pedido-id"></span></h2>
+            <div id="itens-content" class="view-content">
+                <p class="empty-state">Nenhum pedido carregado.</p>
+            </div>
+        </section>
+
+        <!-- ADICIONAR PRODUTO -->
+        <section class="panel active" id="section-add">
+            <h2>Adicionar Produto</h2>
+
+            <form id="form-add-item" class="entity-form">
+
+                <input type="hidden" id="add-pedido-id" name="pedidoId">
+
+                <div class="field-row">
+                    <label for="add-produto-id">ID do Produto</label>
+                    <input id="add-produto-id" name="produtoId" type="number" min="1" placeholder="Digite o ID do produto" required>
+                </div>
+
+                <div class="field-row">
+                    <label for="add-quantidade">Quantidade</label>
+                    <input id="add-quantidade" name="quantidade" type="number" min="1" required>
+                </div>
+
+                <div class="field-row">
+                    <label for="add-valor-pago">Valor Pago (R$)</label>
+                    <input id="add-valor-pago" name="valorPago" type="number" min="0" step="0.01" required>
+                </div>
+
+                <button type="submit">
+                    Adicionar ao Pedido
+                </button>
+
+            </form>
+        </section>
+
+        <!-- ALTERAR QUANTIDADE -->
+        <section class="panel active" id="section-edit">
+            <h2>Alterar Quantidade de Item</h2>
+
+            <form id="form-edit-item" class="entity-form">
+
+                <input type="hidden" id="edit-pedido-id" name="pedidoId">
+
+                <div class="field-row">
+                    <label for="edit-produto-id">ID do Produto</label>
+                    <input id="edit-produto-id" name="produtoId" type="number" min="1" placeholder="Digite o ID do produto" required>
+                </div>
+
+                <div class="field-row">
+                    <label for="edit-quantidade">Nova Quantidade</label>
+                    <input id="edit-quantidade" name="quantidade" type="number" min="1" required>
+                </div>
+
+                <button type="submit">
+                    Atualizar Quantidade
+                </button>
+
+            </form>
+        </section>
+
+        <!-- REMOVER PRODUTO -->
+        <section class="panel active" id="section-remove">
+            <h2>Remover Produto do Pedido</h2>
+
+            <form id="form-remove-item" class="entity-form">
+
+                <input type="hidden" id="remove-pedido-id" name="pedidoId">
+
+                <div class="field-row">
+                    <label for="remove-produto-id">ID do Produto</label>
+                    <input id="remove-produto-id" name="produtoId" type="number" min="1" placeholder="Digite o ID do produto" required>
+                </div>
+
+                <button type="submit">
+                    Remover do Pedido
+                </button>
+
+            </form>
+        </section>
+
+    </main>
+
+    <aside class="output-panel">
+        <h3>Terminal</h3>
+        <pre id="output">Aguardando ação...</pre>
+    </aside>
+    <script src="itens.js"></script>
+    <script src="../utils.js"></script>
+
+</body>
+
+</html>

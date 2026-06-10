@@ -8,7 +8,7 @@ public interface ProdutoViewProjection {
     String getNome();
     String getDescricao();
     BigDecimal getPrecoVenda();
-    BigDecimal getCusto();
+    BigDecimal getPrecoCusto();
     Integer getEstoque();
     String getImagemUrl();
 }

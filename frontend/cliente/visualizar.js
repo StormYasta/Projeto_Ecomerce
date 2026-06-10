@@ -14,7 +14,7 @@ async function loadClientes() {
     try {
         viewContent.innerHTML = '<p>Carregando clientes...</p>';
 
-        const response = await fetch(API_URL);
+        const response = await apiFetch(API_URL);
 
         if (!response.ok) {
             throw new Error('Erro ao buscar clientes');

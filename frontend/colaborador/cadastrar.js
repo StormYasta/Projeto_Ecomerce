@@ -8,60 +8,33 @@ formColaborador.addEventListener('submit', async (e) => {
         sobrenome: document.getElementById('sobrenome').value,
         cpf: document.getElementById('cpf').value.replace(/\D/g, ''),
         statusId: parseInt(document.getElementById('statusId').value),
-
-        dataNascimento: formatarData(
-            document.getElementById('dataNascimento').value
-        ),
-
+        dataNascimento: document.getElementById('dataNascimento').value,
         email: document.getElementById('email').value,
-
-        telefone: document
-            .getElementById('telefone')
-            .value.replace(/\D/g, ''),
-
-        cep: document
-            .getElementById('cep')
-            .value.replace(/\D/g, ''),
-
+        telefone: document.getElementById('telefone').value.replace(/\D/g, ''),
+        cep: document.getElementById('cep').value.replace(/\D/g, ''),
         numero: document.getElementById('numero').value,
         logradouro: document.getElementById('logradouro').value,
         bairro: document.getElementById('bairro').value,
         cidade: document.getElementById('cidade').value,
         uf: document.getElementById('uf').value,
-
-        complemento:
-            document.getElementById('complemento').value || null,
-
-        funcao: obterIdFuncao(
-            document.getElementById('funcao').value
-        ),
-
-        salarioInicial: parseFloat(
-            formatarDinheiro(document.getElementById('salario'))
-        ),
-
-        dataResgistro: formatarData(
-            document.getElementById('dataRegistro').value
-        ),
-
+        complemento: document.getElementById('complemento').value || null,
+        funcao: obterIdFuncao(document.getElementById('funcao').value),
+        salarioInicial: limparMascaraDinheiro(document.getElementById('salario').value),
+        dataResgistro: document.getElementById('dataRegistro').value,
         numeroCTPS: document.getElementById('numCTPS').value,
-
         numeroCNH: document.getElementById('numCNH').value,
-
         login: document.getElementById('login').value,
-
         hashSenha: document.getElementById('senha').value
     };
 
+    console.log(dto)
+
     try {
 
-        const response = await fetch(
+        const response = await apiFetch(
             'http://localhost:8080/colaboradores',
             {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
                 body: JSON.stringify(dto)
             }
         );
@@ -91,7 +64,7 @@ formColaborador.addEventListener('submit', async (e) => {
 
 async function carregarFuncoesColaborador() {
     try {
-        const response = await fetch('http://localhost:8080/funccolaboradores');
+        const response = await apiFetch('http://localhost:8080/funccolaboradores');
 
         if (!response.ok) {
             throw new Error('Erro ao buscar funções');
@@ -108,10 +81,8 @@ async function carregarFuncoesColaborador() {
             .forEach(funcao => {
                 const option = document.createElement('option');
 
-                // o usuário vê a descrição
                 option.value = funcao.descricao;
 
-                // guarda o ID internamente via dataset
                 option.dataset.id = funcao.id;
 
                 datalist.appendChild(option);
@@ -135,13 +106,11 @@ function obterIdFuncao(descricao) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    
+
     carregarFuncoesColaborador();
-    
+
     inserirMascaraCpf(cpf);
     inserirMascaraCep(cep);
     inserirMascaraDinheiro(salario);
-    inserirMascaraData(dataNascimento);
-    inserirMascaraData(dataRegistro);
     inserirMascaraTelefone(telefone);
 });

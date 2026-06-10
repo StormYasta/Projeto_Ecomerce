@@ -29,7 +29,7 @@ public interface ProdutoRepository extends JpaRepository<ProdutoEntity, Long> {
             @Param("Nome") String nome,
             @Param("Descricao") String descricao,
             @Param("PrecoVenda") BigDecimal precoVenda,
-            @Param("custo") BigDecimal custo,
+            @Param("custo") BigDecimal precoCusto,
             @Param("estoque") Integer estoque,
             @Param("imagemurl") String imagemUrl);
 
@@ -38,6 +38,9 @@ public interface ProdutoRepository extends JpaRepository<ProdutoEntity, Long> {
 
     @Query(value = "SELECT * FROM VW_produtos", nativeQuery = true)
     List<ProdutoViewProjection> listarProdutos();
+
+    @Procedure(procedureName = "SP_activate_produto")
+    void ativarProduto(@Param("Id") Long id);
 
     @Procedure(procedureName = "SP_inactivate_produto")
     void inativarProduto(@Param("Id") Long id);

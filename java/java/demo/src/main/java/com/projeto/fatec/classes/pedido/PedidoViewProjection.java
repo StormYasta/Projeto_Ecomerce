@@ -1,10 +1,11 @@
 package com.projeto.fatec.classes.pedido;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public interface PedidoViewProjection {
-    Long getIdPedido();
+
+    Long getPedidoId();
     Long getClienteId();
-    LocalDate getData();
+    LocalDateTime getData();
     String getStatus();
 }

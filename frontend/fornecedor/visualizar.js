@@ -12,7 +12,7 @@ async function loadFornecedores(apenasAtivos = false) {
         viewContent.innerHTML = '<p>Carregando fornecedores...</p>';
 
         const url = apenasAtivos ? API_URL_ATIVOS : API_URL;
-        const response = await fetch(url);
+        const response = await apiFetch(url);
 
         if (!response.ok) {
             throw new Error('Erro ao buscar fornecedores');

@@ -2,13 +2,12 @@ package com.projeto.fatec.classes.usuario;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
-
-import com.projeto.fatec.classes.pessoa.PessoaEntity;
-import com.projeto.fatec.classes.usuario.role.RoleUsuarioEntity;
 
 import java.time.LocalDateTime;
+
+import com.projeto.fatec.classes.usuario.role.RoleUsuarioEntity;
+
+import com.projeto.fatec.classes.pessoa.PessoaEntity;
 
 @Entity
 @Table(name = "TB_usuarios")
@@ -21,6 +20,7 @@ public class UsuarioEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -40,13 +40,11 @@ public class UsuarioEntity {
     @Column(name = "ativo", nullable = false)
     @Builder.Default
     private Boolean ativo = true;
-    
-    @CreationTimestamp
-    @Column(name = "created_at")
+
+    @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
-    @UpdateTimestamp
-    @Column(name = "updated_at")
+    @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
 
     @Column(name = "deleted_at")

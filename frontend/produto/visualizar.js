@@ -10,7 +10,7 @@ async function loadProdutos(apenasAtivos = false) {
     try {
         viewContent.innerHTML = '<p>Carregando produtos...</p>';
 
-        const response = await fetch(API_URL);
+        const response = await apiFetch(API_URL);
 
         if (!response.ok) throw new Error('Erro ao buscar produtos');
 

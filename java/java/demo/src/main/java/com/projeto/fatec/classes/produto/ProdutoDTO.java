@@ -10,7 +10,7 @@ public class ProdutoDTO {
             String nome,
             String descricao,
             BigDecimal precoVenda,
-            BigDecimal custo,
+            BigDecimal precoCusto,
             BigInteger estoque,
             BigInteger fornecedorId,
             String imagemUrl
@@ -21,7 +21,7 @@ public class ProdutoDTO {
             String nome,
             String descricao,
             BigDecimal precoVenda,
-            BigDecimal custo,
+            BigDecimal precoCusto,
             Integer estoque,
             String imagemUrl
     ) {}

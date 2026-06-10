@@ -1443,6 +1443,36 @@ BEGIN
 	END CATCH
 END
 GO
+
+-- ATIVATE DE PRODUTO
+CREATE PROCEDURE SP_activate_produto (
+	@IdProduto BIGINT
+)
+AS
+BEGIN
+	SET NOCOUNT ON;
+	BEGIN TRY
+		BEGIN TRANSACTION;
+
+		-- Validação de existência do Produto
+		IF NOT EXISTS (SELECT 1 FROM TB_produtos WHERE id = @IdProduto)
+		THROW 50001, 'Produto não encontrado', 1;
+
+		-- Soft delete do Produto
+		UPDATE TB_produtos
+		SET ativo = 1,
+			updated_at = GETDATE(),
+			deleted_at = null
+		WHERE id = @IdProduto			
+	END TRY
+
+	BEGIN CATCH
+		IF @@TRANCOUNT > 0
+			ROLLBACK TRANSACTION;
+		THROW;
+	END CATCH
+END
+GO
 ------------------------------------------------------------------------------------------------------
 ----------------- CRIAÇÃO DAS PROCEDURES PARA PEDIDOS	-----------------
 ------------------------------------------------------------------------------------------------------
@@ -1525,7 +1555,7 @@ GO
 ------------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------------
 -- CANCELAMENTO DE PEDIDO
-CREATE PROCEDURE SP_cancel_pedido (
+CREATE PROCEDURE SP_delete_pedido (
     @IdPedido BIGINT
 )
 AS
@@ -1568,7 +1598,8 @@ GO
 CREATE PROCEDURE SP_add_produto_pedido (
     @Pedido_Id	BIGINT,
     @Produto_Id BIGINT,
-    @Quantidade INT
+    @Quantidade INT,
+	@Valor_pago DECIMAL(18,2)
 )
 AS
 BEGIN
@@ -1607,9 +1638,9 @@ BEGIN
 
         -- insert de produto
         INSERT INTO TB_produtos_pedidos 
-			(produto_id, pedido_id, quantidade)
+			(produto_id, pedido_id, quantidade, valor_pago)
         VALUES 
-			(@Produto_Id, @Pedido_Id, @Quantidade);
+			(@Produto_Id, @Pedido_Id, @Quantidade, @Valor_pago);
 
         -- baixa de estoque
         UPDATE TB_produtos
@@ -1637,7 +1668,7 @@ RETURN (
     SELECT	Pedido.produto_id,
 			Produto.nome,
 			Pedido.quantidade,
-	        Produto.preco_venda
+	        Pedido.valor_pago
 
     FROM TB_produtos_pedidos Pedido
     INNER JOIN TB_produtos Produto ON Produto.id = Pedido.produto_id
@@ -1951,7 +1982,6 @@ GRANT EXECUTE TO usuario_fatec;
 GRANT BACKUP DATABASE TO usuario_fatec;
 GO
 
-
 CREATE PROCEDURE dbo.SP_Create_Master_User
 AS
 BEGIN
@@ -1974,3 +2004,13 @@ GO
 -- FROM DISK = 'C:\Backup\bkp.bak';
 
 
+select * from VW_clientes_completos
+select * from VW_colaboradores_completos
+select * from VW_fornecedores
+select * from VW_produtos
+
+select * from TB_pessoas
+
+select * from TB_usuarios
+
+use dev_projeto_fatec_ecomerce

@@ -1,28 +1,44 @@
 package com.projeto.fatec.login;
 
+import com.projeto.fatec.classes.usuario.UsuarioEntity;
+import com.projeto.fatec.classes.usuario.UsuarioRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.projeto.fatec.classes.usuario.UsuarioRepository;
-
-import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
 public class LoginService {
 
     private final UsuarioRepository repository;
+    private final JwtUtil jwtUtil;
 
     @Transactional(readOnly = true)
-    public boolean validarLogin(LoginDTO.Request dto) {
+    public LoginDTO.Response validarLogin(LoginDTO.Request dto) {
 
-        if (dto == null || dto.login() == null || dto.senha() == null) {
-            return false;
+        UsuarioEntity usuario = repository
+                .findByUsuarioLoginAndAtivoTrueAndDeletedAtIsNull(dto.login())
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado ou inativo"));
+
+        if (!usuario.getSenhaHash().equals(dto.senha())) {
+            throw new RuntimeException("Credenciais inválidas");
         }
 
-        return repository
-                .findByUsuarioLoginAndAtivoTrueAndDeletedAtIsNull(dto.login())
-                .map(user -> user.getSenhaHash().equals(dto.senha()))
-                .orElse(false);
+        TipoUsuario tipo = resolverTipo(usuario.getRole().getDescricao());
+
+        Long pessoaId = usuario.getPessoa().getId();
+        String nome = usuario.getPessoa().getNome();
+
+        String token = jwtUtil.gerarToken(pessoaId, usuario.getUsuarioLogin(), tipo);
+
+        return new LoginDTO.Response(token, tipo, pessoaId, nome);
+    }
+
+    private TipoUsuario resolverTipo(String roleDescricao) {
+        return switch (roleDescricao.toUpperCase()) {
+            case "ADMIN", "COLABORADOR" -> TipoUsuario.ADMIN;
+            case "CLIENTE"              -> TipoUsuario.CLIENTE;
+            default -> throw new RuntimeException("Role desconhecida: " + roleDescricao);
+        };
     }
 }

@@ -52,10 +52,10 @@ public interface ColaboradorRepository extends JpaRepository<ColaboradorEntity, 
                         @Param("Status_Id") Integer statusId,
                         @Param("Data_Nascimento") LocalDate dataNascimento,
                         @Param("Funcao") Integer funcao,
-                        @Param("Salario_atual") BigDecimal salarioAtual,
-                        @Param("Data_Registro") LocalDate dataRegistro,
+                        @Param("Salario_Atual") BigDecimal salarioAtual,
                         @Param("Num_CTPS") String CTPS,
-                        @Param("Num_CNH") String CNH);
+                        @Param("Num_CNH") String CNH,
+                        @Param("Data_Registro") LocalDate dataRegistro);
 
         @Procedure(procedureName = "SP_inactivate_pessoa")
         void inactivatePessoa(Long idPessoa);

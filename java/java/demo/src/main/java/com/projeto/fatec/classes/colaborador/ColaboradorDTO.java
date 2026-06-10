@@ -38,7 +38,7 @@ public class ColaboradorDTO {
                         LocalDate dataNascimento,
                         Integer funcao,
                         BigDecimal salarioAtual,
-                        LocalDate dataResgistro,
+                        LocalDate dataRegistro,
                         String numeroCTPS,
                         String numeroCNH) {
         }

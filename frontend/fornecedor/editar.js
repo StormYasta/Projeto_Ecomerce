@@ -12,7 +12,7 @@ async function buscarFornecedorPorId(id) {
     }
 
     try {
-        const response = await fetch(`${API_URL}/${id}`);
+        const response = await apiFetch(`${API_URL}/${id}`);
 
         if (!response.ok) {
             throw new Error('Fornecedor não encontrado');
@@ -75,9 +75,8 @@ async function atualizarFornecedor(event) {
     }
 
     try {
-        const response = await fetch(`${API_URL}/${id}`, {
+        const response = await apiFetch(`${API_URL}/${id}`, {
             method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data)
         });
 
@@ -99,7 +98,7 @@ async function atualizarFornecedor(event) {
     }
 }
 /* =========================
-   ATIVAR FORNECEDOR (DELETE)
+   ATIVAR FORNECEDOR
 ========================= */
 async function ativarFornecedor() {
     const id = document.getElementById('id').value;
@@ -109,7 +108,7 @@ async function ativarFornecedor() {
         return;
     }
     try {
-        const response = await fetch(`${API_URL}/ativar/${id}`, {
+        const response = await apiFetch(`${API_URL}/ativar/${id}`, {
             method: 'PUT'
         });
 
@@ -145,7 +144,7 @@ async function inativarFornecedor() {
     if (!confirmar) return;
 
     try {
-        const response = await fetch(`${API_URL}/${id}`, {
+        const response = await apiFetch(`${API_URL}/${id}`, {
             method: 'DELETE'
         });
 

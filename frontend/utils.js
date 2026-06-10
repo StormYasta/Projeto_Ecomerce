@@ -1,5 +1,5 @@
 /////////////////////////////////////////////////////
-// MASCARA E FORMATO PARA CPF
+// MASCARA PARA CPF
 function inserirMascaraCpf(campo) {
     campo.addEventListener('input', function () {
         let cpf = this.value.replace(/\D/g, '').slice(0, 11);
@@ -13,16 +13,8 @@ function inserirMascaraCpf(campo) {
     });
 }
 
-function formatarCpf(cpf) {
-    cpf = cpf.replace(/\D/g, '').slice(0, 11);
-
-    return cpf
-        .replace(/(\d{3})(\d)/, '$1.$2')
-        .replace(/(\d{3})(\d)/, '$1.$2')
-        .replace(/(\d{3})(\d{1,2})$/, '$1-$2');
-}
 /////////////////////////////////////////////////////
-// MASCARA E FORMATO PARA CEP 
+// MASCARA PARA CEP 
 function inserirMascaraCep(campo) {
     campo.addEventListener('input', function () {
         let cep = this.value.replace(/\D/g, '').slice(0, 8);
@@ -33,44 +25,12 @@ function inserirMascaraCep(campo) {
     });
 }
 
-function formatarCep(cep) {
-    cep = cep.replace(/\D/g, '').slice(0, 8);
-
-    return cep.replace(/(\d{5})(\d)/, '$1-$2');
-}
 /////////////////////////////////////////////////////
-// MASCARA E FORMATO PARA DATA
-function inserirMascaraData(campo) {
-    campo.addEventListener('input', function () {
-        let data = this.value.replace(/\D/g, '').slice(0, 8);
-
-        data = data
-            .replace(/(\d{2})(\d)/, '$1/$2')
-            .replace(/(\d{2})(\d)/, '$1/$2');
-
-        this.value = data;
-    });
-}
-
-function formatarData(data) {
-    if (!data) return null;
-
-    const partes = data.split('/');
-
-    if (partes.length !== 3) return null;
-
-    const [dia, mes, ano] = partes;
-
-    return `${ano}-${mes}-${dia}`;
-}
-
-/////////////////////////////////////////////////////
-// MASCARA E FORMATO PARA CELULAR
+// MASCARA PARA CELULAR
 function inserirMascaraTelefone(campo) {
     campo.addEventListener('input', function () {
         let tel = this.value.replace(/\D/g, '').slice(0, 13);
 
-        // adiciona o +55 automaticamente
         tel = tel.replace(/^(\d{2})(\d)/, '+$1 ($2');
         tel = tel.replace(/^\+(\d{2}) \((\d{2})(\d)/, '+$1 ($2) $3');
         tel = tel.replace(/(\d{5})(\d)/, '$1-$2');
@@ -83,13 +43,8 @@ function inserirMascaraTelefone(campo) {
         campo.setSelectionRange(len, len);
     });
 }
-
-function formatarTelefone(telefone) {
-    return telefone.replace(/\D/g, '').slice(0, 13);
-}
-
 /////////////////////////////////////////////////////
-// MASCARA E FORMATO PARA CNPJ
+// MASCARA PARA CNPJ
 function inserirMascaraCnpj(input) {
     input.addEventListener('input', () => {
         let v = input.value.replace(/\D/g, '').slice(0, 14);
@@ -99,10 +54,6 @@ function inserirMascaraCnpj(input) {
              .replace(/(\d{4})(\d)/, '$1-$2');
         input.value = v;
     });
-}
-
-function formatarCnpj(cnpj) {
-    return cnpj.replace(/\D/g, '');
 }
 /////////////////////////////////////////////////////
 // MASCARA E FORMATO PARA DINHEIRO
@@ -134,12 +85,47 @@ function inserirMascaraDinheiro(campo) {
     });
 }
 
-function formatarDinheiro(valor) {
-    if (!valor) return null;
+function limparMascaraDinheiro (value) {
+    if (!value) return null;
 
-    const numeros = valor.replace(/\D/g, '');
+    return value
+        .replace(/R\$\s?/g, '')   // remove R$
+        .replace(/\./g, '')       // remove pontos de milhar
+        .replace(',', '.')        // troca vírgula por ponto
+        .trim();
+}
 
-    if (!numeros) return null;
+// ─────────────────────────────────────────────
+//  Wrapper de fetch que injeta o token JWT
+// ─────────────────────────────────────────────
+async function apiFetch(url, options = {}) {
+    const token = localStorage.getItem('token');
 
-    return parseInt(numeros, 10) / 100;
+    const headers = {
+        'Content-Type': 'application/json',
+        ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
+        ...(options.headers ?? {})
+    };
+
+    const response = await fetch(url, { ...options, headers });
+
+    // Token expirado ou inválido — redireciona para login
+    if (response.status === 401 || response.status === 403) {
+        localStorage.clear();
+        window.location.href = 'login.html';
+        return;
+    }
+
+    return response;
+}
+
+// ─────────────────────────────────────────────
+//  Helpers de permissão
+// ─────────────────────────────────────────────
+function isAdmin() {
+    return localStorage.getItem('tipo') === 'ADMIN';
+}
+
+function isCliente() {
+    return localStorage.getItem('tipo') === 'CLIENTE';
 }

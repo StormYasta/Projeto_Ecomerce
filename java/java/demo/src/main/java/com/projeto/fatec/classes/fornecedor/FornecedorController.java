@@ -49,7 +49,7 @@ public class FornecedorController {
 
     @PutMapping("ativar/{id}")
     public ResponseEntity<String> ativar(@PathVariable Long id) {
-        service.ativarFornecedor(id);;
+        service.ativarFornecedor(id);
         return ResponseEntity.ok("Fornecedor ativado com sucesso");
     }
 

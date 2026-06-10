@@ -21,7 +21,7 @@ public class ProdutoService {
                 dto.nome(),
                 dto.descricao(),
                 dto.precoVenda(),
-                dto.custo(),
+                dto.precoCusto(),
                 dto.estoque(),
                 dto.fornecedorId(),
                 dto.imagemUrl());
@@ -40,7 +40,7 @@ public class ProdutoService {
                 dto.nome(),
                 dto.descricao(),
                 dto.precoVenda(),
-                dto.custo(),
+                dto.precoCusto(),
                 dto.estoque(),
                 dto.imagemUrl());
     }
@@ -51,7 +51,12 @@ public class ProdutoService {
     }
 
     @Transactional
+    public void ativarProduto(@NonNull Long id) {
+        repository.ativarProduto(id);
+    }
+
+    @Transactional
     public void inativarProduto(@NonNull Long id) {
-        repository.deleteById(id);
+        repository.inativarProduto(id);
     }
 }

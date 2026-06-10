@@ -1,5 +1,6 @@
 const API_URL = 'http://localhost:8080/colaboradores';
 
+const formColaborador = document.getElementById('form-colaborador');
 const output = document.getElementById('output');
 
 /* =========================
@@ -12,20 +13,17 @@ async function buscarColaboradorPorId(id) {
     }
 
     try {
-        const response = await fetch(`${API_URL}/${id}`);
+        const response = await apiFetch(`${API_URL}/${id}`);
 
         if (!response.ok) {
             throw new Error('Colaborador não encontrado');
         }
 
-        const colaborador = await response.json();
+        const colab = await response.json();
 
-        preencherFormularioColaborador(colaborador);
+        preencherFormulario(colab);
 
-        output.textContent = JSON.stringify({
-            mensagem: 'Colaborador carregado com sucesso',
-            colaborador
-        }, null, 2);
+        output.textContent = JSON.stringify(colab, null, 2);
 
     } catch (error) {
         console.error(error);
@@ -36,152 +34,197 @@ async function buscarColaboradorPorId(id) {
 /* =========================
    PREENCHER FORMULÁRIO
 ========================= */
-async function preencherFormularioColaborador(colaborador) {
+function preencherFormulario(c) {
 
-    setValue('pessoaId',        colaborador.idColaborador ?? colaborador.pessoaId);
-    setValue('nome',            colaborador.nome);
-    setValue('sobrenome',       colaborador.sobrenome);
-    setValue('cpf',             formatarCpf(colaborador.cpf));
-    setValue('dataNascimento',  formatarData(colaborador.dataNascimento));
-    setValue('salarioAtual',    colaborador.salarioAtual);
-    setValue('dataResgistro',   formatarData(colaborador.dataRegistro));
-    setValue('numeroCTPS',      colaborador.numCarteiraTrabalho);
-    setValue('numeroCNH',       colaborador.numCNH);
+    formColaborador.reset();
 
+    document.getElementById('pessoaId').value = c.pessoaId ?? c.idColaborador
+    document.getElementById('nome').value = c.nome
+    document.getElementById('sobrenome').value = c.sobrenome
+    document.getElementById('cpf').value = c.cpf
+    document.getElementById('statusId').value = c.statusId
+    document.getElementById('salario').value = c.salarioAtual
+    document.getElementById('dataRegistro').value = c.dataRegistro
+    document.getElementById('dataNascimento').value = c.dataNascimento
+    document.getElementById('numCTPS').value = c.numCarteiraTrabalho
+    document.getElementById('numCNH').value = c.numCNH
+
+    document.getElementById('salario').dispatchEvent(new Event('input'))
+
+    formColaborador.querySelector('[name="pessoaId"]').readOnly = true;
 }
+
 /* =========================
-   ATUALIZAR COLABORADOR (PUT)
+   ATUALIZAR COLABORADOR
 ========================= */
-async function atualizarColaborador(event) {
-    event.preventDefault();
+formColaborador.addEventListener('submit', async (e) => {
+    e.preventDefault();
 
-    const form = event.target;
-    const formData = new FormData(form);
+    const dto = {
+        pessoaId: Number(document.getElementById('pessoaId').value),
+        nome: document.getElementById('nome').value,
+        sobrenome: document.getElementById('sobrenome').value,
+        cpf: document.getElementById('cpf').value.replace(/\D/g, ''),
+        statusId: parseInt(document.getElementById('statusId').value),
+        dataNascimento: document.getElementById('dataNascimento').value,
+        dataRegistro: document.getElementById('dataRegistro').value,
+        funcao: obterIdFuncao(document.getElementById('funcao').value),
+        salarioAtual: limparMascaraDinheiro(document.getElementById('salario').value),
+        numeroCTPS: document.getElementById('numCTPS').value.replace(/\D/g, ''),
+        numeroCNH: document.getElementById('numCNH').value.replace(/\D/g, '')
+    };
 
-    const data = {};
-
-    for (const [key, value] of formData.entries()) {
-        data[key] = value;
-    }
-
-    data.statusId   = parseInt(data.statusId);
-    data.funcao     = parseInt(data.funcao);
-    data.salarioAtual = parseFloat(data.salarioAtual);
-
-    const id = data.pessoaId;
-
-    if (!id) {
-        alert('ID do colaborador é obrigatório');
-        return;
-    }
+    console.log(dto)
 
     try {
-        const response = await fetch(`${API_URL}/${id}`, {
+        const response = await apiFetch(`${API_URL}/${dto.pessoaId}`, {
             method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
+            body: JSON.stringify(dto)
         });
 
         const text = await response.text();
 
-        output.textContent = JSON.stringify({
-            status: response.status,
-            resposta: text,
-            enviado: data
-        }, null, 2);
+        output.textContent = text;
 
         if (response.ok) {
             alert('Colaborador atualizado com sucesso!');
+            formColaborador.reset();
         }
 
     } catch (error) {
         console.error(error);
         output.textContent = 'Erro ao atualizar colaborador';
     }
-}
+});
 
 /* =========================
-   INATIVAR COLABORADOR (DELETE)
+   INATIVAR
 ========================= */
 async function inativarColaborador() {
 
-    const id = document.querySelector('[name="pessoaId"]').value;
+    const id = get('pessoaId');
 
     if (!id) {
-        alert('Carregue um colaborador antes de inativar');
+        alert('Carregue um colaborador primeiro');
         return;
     }
 
-    const confirmar = confirm('Tem certeza que deseja inativar este colaborador?');
-
-    if (!confirmar) return;
+    if (!confirm('Deseja inativar este colaborador?')) return;
 
     try {
-        const response = await fetch(`${API_URL}/${id}`, {
+        const response = await apiFetch(`${API_URL}/${id}`, {
             method: 'DELETE'
         });
 
         const text = await response.text();
 
-        output.textContent = JSON.stringify({
-            status: response.status,
-            resposta: text
-        }, null, 2);
+        output.textContent = text;
 
         if (response.ok) {
-            alert('Colaborador inativado com sucesso!');
-            limparCampos();
+            alert('Colaborador inativado');
+            formColaborador.reset();
         }
 
     } catch (error) {
         console.error(error);
-        output.textContent = 'Erro ao inativar colaborador';
     }
+}
+
+
+async function carregarFuncoesColaborador() {
+    try {
+        const response = await apiFetch('http://localhost:8080/funccolaboradores');
+
+        if (!response.ok) {
+            throw new Error('Erro ao buscar funções');
+        }
+
+        const funcoes = await response.json();
+
+        const datalist = document.getElementById('lista-funcoes');
+
+        datalist.innerHTML = '';
+
+        funcoes
+            .filter(f => f.ativo)
+            .forEach(funcao => {
+                const option = document.createElement('option');
+
+                option.value = funcao.descricao;
+
+                option.dataset.id = funcao.id;
+
+                datalist.appendChild(option);
+            });
+
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+function obterIdFuncao(descricao) {
+    const options = document.querySelectorAll('#lista-funcoes option');
+
+    for (const opt of options) {
+        if (opt.value === descricao.toUpperCase()) {
+            return parseInt(opt.dataset.id);
+        }
+    }
+
+    return null;
 }
 
 /* =========================
    HELPERS
 ========================= */
+
 function setValue(name, value) {
-    const field = document.querySelector(`[name="${name}"]`);
-    if (!field) return;
-    field.value = value ?? '';
+    const el = document.querySelector(`[name="${name}"]`);
+    if (el) el.value = value ?? '';
 }
 
-function limparCampos() {
-    document.getElementById('form-colaborador').reset();
+function get(name) {
+    const el = document.querySelector(`[name="${name}"]`);
+    return el ? el.value : '';
+}
 
-    const idField = document.querySelector('[name="pessoaId"]');
-    if (idField) {
-        idField.readOnly = false;
-        idField.value = '';
-    }
+function limpar(v) {
+    return (v ?? '').toString().replace(/\D/g, '');
+}
 
-    const searchField = document.getElementById('search-id');
-    if (searchField) searchField.value = '';
-
-    output.textContent = 'Aguardando operação...';
+/* dinheiro */
+function formatarDinheiro(v) {
+    if (!v) return null;
+    const n = limpar(v);
+    return n ? (parseInt(n) / 100).toFixed(2) : null;
 }
 
 /* =========================
-   EVENTOS
+   INIT
 ========================= */
-document.getElementById('btn-search').addEventListener('click', () => {
-    const id = document.getElementById('search-id').value;
-    buscarColaboradorPorId(id);
-});
-
-document.getElementById('form-colaborador')
-    .addEventListener('submit', atualizarColaborador);
-
-document.getElementById('btn-delete')
-    .addEventListener('click', inativarColaborador);
-
 document.addEventListener('DOMContentLoaded', () => {
+
+    carregarFuncoesColaborador();
+
+    const cpf = document.querySelector('[name="cpf"]');
+    const salario = document.querySelector('[name="salario"]');
+
     inserirMascaraCpf(cpf);
     inserirMascaraDinheiro(salario);
-    inserirMascaraData(dataNascimento);
-    inserirMascaraData(dataRegistro);
+
+    document.getElementById('btn-search')
+        .addEventListener('click', () => {
+            const id = document.getElementById('search-id').value;
+            buscarColaboradorPorId(id);
+        });
+
+    document.getElementById('btn-delete')
+        .addEventListener('click', inativarColaborador);
 });
+
+function formatarDataInput(v) {
+    if (!v) return '';
+
+    // caso venha ISO com hora
+    return v.split('T')[0];
+}

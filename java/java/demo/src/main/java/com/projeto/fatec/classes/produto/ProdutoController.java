@@ -3,7 +3,6 @@ package com.projeto.fatec.classes.produto;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -50,9 +49,15 @@ public class ProdutoController {
         return ResponseEntity.ok("Produto atualizado com sucesso");
     }
 
+    @PutMapping("ativar/{id}")
+    public ResponseEntity<String> ativar(@PathVariable Long id) {
+        service.ativarProduto(id);
+        return ResponseEntity.ok("Produto ativado com sucesso");
+    }
+
     //SOFT DELETE (INATIVAR)
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> inativar(@PathVariable @NonNull Long id) {
+    public ResponseEntity<String> inativar(@PathVariable Long id) {
         service.inativarProduto(id);
         return ResponseEntity.ok("Produto inativado com sucesso");
     }

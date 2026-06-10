@@ -68,18 +68,26 @@ form.addEventListener('submit', async (event) => {
             body: JSON.stringify(dto)
         });
 
+        if (!response.ok) {
+            output.textContent = "Login ou senha inválidos";
+            return;
+        }
+
         const result = await response.json();
 
-        if (result === true) {
-            output.textContent = "Login válido! Redirecionando...";
+        localStorage.setItem('token',    result.token);
+        localStorage.setItem('tipo',     result.tipo);       // "ADMIN" ou "CLIENTE"
+        localStorage.setItem('pessoaId', result.pessoaId);
+        localStorage.setItem('nome',     result.nome);
+        localStorage.setItem('loggedIn', 'true');
 
-            setTimeout(() => {
-                window.location.href = 'dashboard.html';
-            }, 800);
+        output.textContent = `Bem-vindo, ${result.nome}! Redirecionando...`;
 
-        } else {
-            output.textContent = "Login ou senha inválidos";
-        }
+        console.log(result.token)
+
+        setTimeout(() => {
+            window.location.href = 'dashboard.html';
+        }, 800);
 
     } catch (error) {
         console.error(error);

@@ -8,7 +8,7 @@ async function carregarFornecedores() {
     const select = document.getElementById('fornecedorId');
 
     try {
-        const response = await fetch(API_FORNECEDORES);
+        const response = await apiFetch(API_FORNECEDORES);
 
         if (!response.ok) throw new Error('Erro ao buscar fornecedores');
 
@@ -38,8 +38,8 @@ document.getElementById('form-produto').addEventListener('submit', async (e) => 
     const dto = {
         nome: document.getElementById('nome').value,
         descricao: document.getElementById('descricao').value,
-        precoVenda: formatarDinheiro(document.getElementById('precoVenda').value),
-        custo: formatarDinheiro(document.getElementById('custo').value),
+        precoVenda: limparMascaraDinheiro(document.getElementById('precoVenda').value),
+        precoCusto: limparMascaraDinheiro(document.getElementById('precoCusto').value),
         estoque: parseInt(document.getElementById('estoque').value),
         fornecedorId: parseInt(document.getElementById('fornecedorId').value),
         imagemUrl: document.getElementById('imagemUrl').value || null
@@ -49,9 +49,8 @@ document.getElementById('form-produto').addEventListener('submit', async (e) => 
     console.log(typeof dto.fornecedorId);
 
     try {
-        const response = await fetch(API_URL, {
+        const response = await apiFetch(API_URL, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(dto)
         });
 
@@ -77,5 +76,5 @@ document.addEventListener('DOMContentLoaded', () => {
     carregarFornecedores()
 
     inserirMascaraDinheiro(document.getElementById('precoVenda'))
-    inserirMascaraDinheiro(document.getElementById('custo'))
+    inserirMascaraDinheiro(document.getElementById('precoCusto'))
 });

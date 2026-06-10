@@ -7,7 +7,7 @@ formCliente.addEventListener('submit', async (e) => {
         sobrenome: document.getElementById('sobrenome').value,
         cpf: document.getElementById('cpf').value.replace(/\D/g, ''),
         statusId: parseInt(document.getElementById('statusId').value),
-        dataNascimento: formatarData(document.getElementById('dataNascimento').value),
+        dataNascimento: document.getElementById('dataNascimento').value,
         email: document.getElementById('email').value,
         telefone: document.getElementById('telefone').value.replace(/\D/g, ''),
         cep: document.getElementById('cep').value.replace(/\D/g, ''),
@@ -22,13 +22,10 @@ formCliente.addEventListener('submit', async (e) => {
     };
 
     try {
-        const response = await fetch(
+        const response = await apiFetch(
             'http://localhost:8080/clientes',
             {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
                 body: JSON.stringify(dto)
             }
         );
@@ -52,7 +49,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     inserirMascaraCpf(cpf);
     inserirMascaraCep(cep);
-    inserirMascaraData(dataNascimento);
     inserirMascaraTelefone(telefone);
 });
 

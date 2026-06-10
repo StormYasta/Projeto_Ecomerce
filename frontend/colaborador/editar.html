@@ -79,12 +79,12 @@
 
                 <div class="field-row">
                     <label for="dataNascimento">Data de Nascimento</label>
-                    <input id="dataNascimento" name="dataNascimento">
+                    <input id="dataNascimento" name="dataNascimento" type="date">
                 </div>
                 
                 <div class="field-row">
                     <label for="funcao">Função</label>
-                    <input id="funcao" name="funcao" type="text">
+                    <input id="funcao" name="funcao" list="lista-funcoes" type="text" required>
                     <datalist id="lista-funcoes"></datalist>
                 </div>
 
@@ -95,18 +95,18 @@
 
                 <div class="field-row">
                     <label for="dataRegistro">Data de Registro</label>
-                    <input id="dataRegistro" name="dataRegistro" type="text">
+                    <input id="dataRegistro" name="dataRegistro" type="date">
                 </div>
 
                 <div class="field-row">
                     <label for="numCTPS">Carteira de Trabalho</label>
-                    <input id="numCTPS" name="numCTPS" type="text">
+                    <input id="numCTPS" name="numCTPS" type="text" maxlength="11">
                 </div>
-                
+
                 <div class="field-row">
                     <label for="numCNH">Carteira de Motorista</label>
-                    <input id="numCNH" name="numCNH" type="text">
-                </div>
+                    <input id="numCNH" name="numCNH" type="text" maxlength="11">
+                </div>  
 
                 <button type="submit">
                     Atualizar Colaborador

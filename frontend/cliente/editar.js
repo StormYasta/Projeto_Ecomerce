@@ -12,7 +12,7 @@ async function buscarClientePorId(id) {
     }
 
     try {
-        const response = await fetch(`${API_URL}/${id}`);
+        const response = await apiFetch(`${API_URL}/${id}`);
 
         if (!response.ok) {
             throw new Error('Cliente não encontrado');
@@ -41,9 +41,9 @@ function preencherFormularioCliente(cliente) {
     setValue('pessoaId', cliente.idCliente ?? cliente.pessoaId);
     setValue('nome', cliente.nome);
     setValue('sobrenome', cliente.sobrenome);
-    setValue('cpf', formatarCpf(cliente.cpf));
+    setValue('cpf', cliente.cpf);
     setValue('statusDescricao', cliente.statusId);
-    setValue('dataNascimento', formatarData(cliente.dataNascimento));
+    setValue('dataNascimento', cliente.dataNascimento);
 
     // trava ID
     const idField = document.querySelector('[name="pessoaId"]');
@@ -56,16 +56,16 @@ function preencherFormularioCliente(cliente) {
 async function atualizarCliente(event) {
     event.preventDefault();
 
-    const form = event.target;
-    const formData = new FormData(form);
+    const dto = {
+        pessoaId: parseInt(document.getElementById('pessoaId').value),
+        nome: document.getElementById('nome').value,
+        sobrenome: document.getElementById('sobrenome').value,
+        cpf: document.getElementById('cpf').value,
+        statusId: parseInt(document.getElementById('statusId').value),
+        dataNascimento: document.getElementById('dataNascimento').value
+    };
 
-    const data = {};
-
-    for (const [key, value] of formData.entries()) {
-        data[key] = value;
-    }
-
-    const id = data.pessoaId;
+    const id = dto.pessoaId;
 
     if (!id) {
         alert('ID do cliente é obrigatório');
@@ -73,20 +73,17 @@ async function atualizarCliente(event) {
     }
 
     try {
-        const response = await fetch(`${API_URL}/${id}`, {
+        const response = await apiFetch(`${API_URL}/${id}`, {
             method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
+            body: JSON.stringify(dto)
         });
 
-        const text = await response.text();
+        const texto = await response.text();
 
         output.textContent = JSON.stringify({
             status: response.status,
-            resposta: text,
-            enviado: data
+            resposta: texto,
+            enviado: dto
         }, null, 2);
 
         if (response.ok) {
@@ -95,10 +92,9 @@ async function atualizarCliente(event) {
 
     } catch (error) {
         console.error(error);
-        output.textContent = 'Erro ao atualizar cliente';
+        output.textContent = 'Erro ao conectar com a API';
     }
 }
-
 /* =========================
    HELPERS
 ========================= */
@@ -107,12 +103,6 @@ function setValue(name, value) {
     if (!field) return;
     field.value = value ?? '';
 }
-
-function formatDate(date) {
-    if (!date) return '';
-    return date.split('T')[0];
-}
-
 /* =========================
    EVENTOS
 ========================= */
@@ -141,7 +131,7 @@ async function deletarCliente() {
     if (!confirmar) return;
 
     try {
-        const response = await fetch(`${API_URL}/${id}`, {
+        const response = await apiFetch(`${API_URL}/${id}`, {
             method: 'DELETE'
         });
 
@@ -186,5 +176,4 @@ function limparCampos() {
 document.addEventListener('DOMContentLoaded', () => {
 
     inserirMascaraCpf(cpf);
-    inserirMascaraData(dataNascimento);
 });

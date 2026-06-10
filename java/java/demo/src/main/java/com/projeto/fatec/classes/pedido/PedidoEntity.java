@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.projeto.fatec.classes.cliente.ClienteEntity;
-import com.projeto.fatec.classes.pedido.produto_pedido.ProdutoPedidoEntity;
+import com.projeto.fatec.classes.pedido.item.ProdutoPedidoEntity;
 import com.projeto.fatec.classes.pedido.status.StatusPedidoEntity;
 
 @Entity

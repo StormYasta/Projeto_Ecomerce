@@ -1,18 +1,24 @@
 package com.projeto.fatec.classes.pedido;
 
+import java.math.BigDecimal;
+
 public class PedidoDTO {
 
     public record Insert(
-            long id,
-            Long clienteId,
-            Long produtoId,
-            String dataPedido
+            Long clienteId
     ) {}
 
-    public record Update(
-            long id,
-            Long clienteId,
+    public record UpdateStatus(
+            Integer statusId
+    ) {}
+
+    public record AddItem(
             Long produtoId,
-            String dataPedido
+            Integer quantidade,
+            BigDecimal valorPago
+    ) {}
+
+    public record UpdateItem(
+            Integer quantidade
     ) {}
 }

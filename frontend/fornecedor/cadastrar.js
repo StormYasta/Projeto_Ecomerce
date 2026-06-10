@@ -14,9 +14,8 @@ formFornecedor.addEventListener('submit', async (e) => {
     };
 
     try {
-        const response = await fetch(API_URL, {
+        const response = await apiFetch(API_URL, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(dto)
         });
 
@@ -35,6 +34,6 @@ formFornecedor.addEventListener('submit', async (e) => {
 });
 
 document.addEventListener('DOMContentLoaded', () => {
-    inserirMascaraCnpj(document.getElementById('cnpj'));
-    inserirMascaraTelefone(document.getElementById('telefone'));
+    inserirMascaraCnpj(cnpjw);
+    inserirMascaraTelefone(telefone);
 });

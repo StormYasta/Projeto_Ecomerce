@@ -64,5 +64,5 @@ public class ProdutoEntity {
 
     @OneToMany(mappedBy = "produto")
     @Builder.Default
-    private List<com.projeto.fatec.classes.pedido.produto_pedido.ProdutoPedidoEntity> pedidos = new java.util.ArrayList<>();
+    private List<com.projeto.fatec.classes.pedido.item.ProdutoPedidoEntity> pedidos = new java.util.ArrayList<>();
 }

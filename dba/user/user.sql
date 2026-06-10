@@ -12,7 +12,6 @@ GRANT EXECUTE TO usuario_fatec;
 GRANT BACKUP DATABASE TO usuario_fatec;
 GO
 
-
 CREATE PROCEDURE dbo.SP_Create_Master_User
 AS
 BEGIN

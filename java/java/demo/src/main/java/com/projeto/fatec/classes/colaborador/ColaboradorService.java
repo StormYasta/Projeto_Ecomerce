@@ -62,9 +62,9 @@ public class ColaboradorService {
                 dto.dataNascimento(), 
                 dto.funcao(),
                 dto.salarioAtual(),
-                dto.dataResgistro(),
+                dto.numeroCNH(),
                 dto.numeroCTPS(),
-                dto.numeroCNH());
+                dto.dataRegistro());
     }
 
     @Transactional

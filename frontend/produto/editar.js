@@ -10,7 +10,7 @@ async function carregarFornecedores(fornecedorAtualId = null) {
     const select = document.getElementById('fornecedorId');
 
     try {
-        const response = await fetch(API_FORNECEDORES);
+        const response = await apiFetch(API_FORNECEDORES);
         if (!response.ok) throw new Error('Erro ao buscar fornecedores');
 
         const fornecedores = await response.json();
@@ -43,7 +43,7 @@ async function buscarProdutoPorId(id) {
     }
 
     try {
-        const response = await fetch(`${API_URL}/${id}`);
+        const response = await apiFetch(`${API_URL}/${id}`);
         console.log(response)
         if (!response.ok) throw new Error('Produto não encontrado');
 
@@ -71,7 +71,7 @@ function preencherFormulario(produto) {
     setValue('nome',        produto.nome);
     setValue('descricao',   produto.descricao);
     setValue('precoVenda',  produto.precoVenda);
-    setValue('custo',       produto.custo);
+    setValue('precoCusto',  produto.precoCusto);
     setValue('estoque',     produto.estoque);
     setValue('imagemUrl',   produto.imagemUrl);
 
@@ -102,15 +102,14 @@ async function atualizarProduto(event) {
 
     // conversões de tipo
     data.precoVenda   = parseFloat(data.precoVenda);
-    data.custo        = parseFloat(data.custo);
+    data.precoCusto        = parseFloat(data.precoCusto);
     data.estoque      = parseInt(data.estoque);
-    data.fornecedorId = parseInt(data.fornecedorId);
+    data.produtoId = parseInt(data.produtoId);
     if (!data.imagemUrl) data.imagemUrl = null;
 
     try {
-        const response = await fetch(`${API_URL}/${id}`, {
+        const response = await apiFetch(`${API_URL}/${id}`, {
             method:  'PUT',
-            headers: { 'Content-Type': 'application/json' },
             body:    JSON.stringify(data)
         });
 
@@ -133,6 +132,38 @@ async function atualizarProduto(event) {
 }
 
 /* =========================
+   ATIVAR PRODUTO
+========================= */
+async function ativarProduto() {
+    const id = document.getElementById('id').value;
+
+    if (!id) {
+        alert('Carregue um produto antes de ativar');
+        return;
+    }
+    try {
+        const response = await apiFetch(`${API_URL}/ativar/${id}`, {
+            method: 'PUT'
+        });
+
+        const text = await response.text();
+
+        output.textContent = JSON.stringify({
+            status: response.status,
+            resposta: text
+        }, null, 2);
+
+        if (response.ok) {
+            alert('Produto ativado com sucesso!');
+            limparCampos();
+        }
+
+    } catch (error) {
+        console.error(error);
+        output.textContent = 'Erro ao ativar produto';
+    }
+}
+/* =========================
    INATIVAR PRODUTO (DELETE)
 ========================= */
 async function inativarProduto() {
@@ -147,7 +178,7 @@ async function inativarProduto() {
     if (!confirmar) return;
 
     try {
-        const response = await fetch(`${API_URL}/${id}`, {
+        const response = await apiFetch(`${API_URL}/${id}`, {
             method: 'DELETE'
         });
 
@@ -203,6 +234,14 @@ document.getElementById('btn-search').addEventListener('click', () => {
 
 document.getElementById('form-produto').addEventListener('submit', atualizarProduto);
 
+document.getElementById('btn-ativar').addEventListener('click', ativarProduto);
+
 document.getElementById('btn-delete').addEventListener('click', inativarProduto);
 
-document.addEventListener('DOMContentLoaded', () => carregarFornecedores());
+document.addEventListener('DOMContentLoaded', () => {
+    carregarFornecedores()
+
+    inserirMascaraDinheiro(document.getElementById('precoVenda'))
+    inserirMascaraDinheiro(document.getElementById('precoCusto'))
+});
+
