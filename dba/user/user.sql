@@ -20,7 +20,7 @@ BEGIN
 	INSERT INTO TB_pessoas (nome, sobrenome, cpf, status_id, data_nascimento) VALUES ('MASTER', 'BOY', '99999999999', 1, '0001-01-01')
 	SET @id = SCOPE_IDENTITY()
 
-	INSERT INTO TB_usuarios (pessoa_id, usuario_role, usuario_login, senha_hash) VALUES (@id, 1, 'master', '##fatec##')
+	INSERT INTO TB_usuarios (pessoa_id, usuario_role, usuario_login, senha_hash) VALUES (@id, 1, 'master', '$2a$10$PKJ2vv2TN5o2XBYIiu23ae7TpjyfgP/7yFsVNV7I2WUIZDUcdIO8C')
 END
 GO
 EXEC dbo.SP_Create_Master_User

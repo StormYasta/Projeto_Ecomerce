@@ -1,0 +1,61 @@
+﻿cliente_id;nome;sobrenome;cliente;email;telefone;uf_cliente;cidade_cliente;idade_cliente;data_nascimento;data_cadastro;status_cliente
+1;Nicolas;Souza;Nicolas Souza;nicolas.souza1@email.com;17937295260;SP;Mirassol;18;2008-03-23;2025-07-11;ATIVO
+2;Beatriz;Costa;Beatriz Costa;beatriz.costa2@email.com;17935503389;SP;Votuporanga;24;2002-06-28;2025-06-20;ATIVO
+3;Matheus;Almeida;Matheus Almeida;matheus.almeida3@email.com;17948537831;SP;Votuporanga;23;2003-09-10;2025-11-20;ATIVO
+4;Letícia;Santos;Letícia Santos;letícia.santos4@email.com;17913556182;SP;Catanduva;36;1990-02-28;2025-04-28;ATIVO
+5;Olívia;Gomes;Olívia Gomes;olívia.gomes5@email.com;17994196727;GO;Goiânia;41;1985-06-07;2025-11-09;INATIVO
+6;Yasmin;Santos;Yasmin Santos;yasmin.santos6@email.com;17950929647;MG;Uberaba;52;1974-12-08;2025-03-15;ATIVO
+7;Thiago;Gomes;Thiago Gomes;thiago.gomes7@email.com;17904308421;RJ;Rio de Janeiro;61;1965-06-27;2025-01-08;ATIVO
+8;Mariana;Pereira;Mariana Pereira;mariana.pereira8@email.com;17953100814;SP;São Paulo;63;1963-06-07;2025-11-16;INATIVO
+9;Yasmin;Almeida;Yasmin Almeida;yasmin.almeida9@email.com;17978461803;SP;Catanduva;33;1993-12-18;2025-09-09;ATIVO
+10;Tatiane;Rodrigues;Tatiane Rodrigues;tatiane.rodrigues10@email.com;17914716857;SP;Catanduva;50;1976-08-03;2025-01-28;ATIVO
+11;Felipe;Martins;Felipe Martins;felipe.martins11@email.com;17933744231;RJ;Rio de Janeiro;42;1984-07-20;2025-08-17;SUSPENSO
+12;Renan;Silva;Renan Silva;renan.silva12@email.com;17986028436;RJ;Rio de Janeiro;61;1965-09-25;2025-05-25;ATIVO
+13;João;Rodrigues;João Rodrigues;joão.rodrigues13@email.com;17923978249;SP;São José do Rio Preto;64;1962-12-09;2025-09-25;ATIVO
+14;Diego;Carvalho;Diego Carvalho;diego.carvalho14@email.com;17921682744;MG;Belo Horizonte;50;1976-10-07;2025-03-12;ATIVO
+15;Beatriz;Araujo;Beatriz Araujo;beatriz.araujo15@email.com;17948718453;SP;São José do Rio Preto;56;1970-06-16;2025-01-04;ATIVO
+16;Larissa;Martins;Larissa Martins;larissa.martins16@email.com;17965228535;SP;São José do Rio Preto;33;1993-10-03;2025-02-24;ATIVO
+17;Beatriz;Nascimento;Beatriz Nascimento;beatriz.nascimento17@email.com;17970823176;PR;Londrina;60;1966-08-18;2025-03-09;ATIVO
+18;Thiago;Nascimento;Thiago Nascimento;thiago.nascimento18@email.com;17987225156;PR;Curitiba;30;1996-12-10;2025-07-22;ATIVO
+19;Sofia;Nascimento;Sofia Nascimento;sofia.nascimento19@email.com;17974346088;SP;Catanduva;32;1994-02-11;2025-01-19;ATIVO
+20;Henrique;Silva;Henrique Silva;henrique.silva20@email.com;17944349361;SP;Ribeirão Preto;21;2005-04-03;2025-01-28;ATIVO
+21;Henrique;Pereira;Henrique Pereira;henrique.pereira21@email.com;17963440831;RJ;Rio de Janeiro;52;1974-03-24;2025-10-19;ATIVO
+22;Pedro;Martins;Pedro Martins;pedro.martins22@email.com;17955177213;SP;São José do Rio Preto;24;2002-11-14;2025-06-14;ATIVO
+23;Matheus;Silva;Matheus Silva;matheus.silva23@email.com;17914665841;RJ;Rio de Janeiro;21;2005-07-24;2025-06-26;ATIVO
+24;Gabriela;Nascimento;Gabriela Nascimento;gabriela.nascimento24@email.com;17910117988;SP;Votuporanga;29;1997-05-15;2025-04-28;ATIVO
+25;Renan;Carvalho;Renan Carvalho;renan.carvalho25@email.com;17931726318;MG;Uberaba;59;1967-09-27;2025-01-03;ATIVO
+26;Pedro;Almeida;Pedro Almeida;pedro.almeida26@email.com;17935594951;SP;Votuporanga;21;2005-03-13;2025-01-13;INATIVO
+27;Rodrigo;Almeida;Rodrigo Almeida;rodrigo.almeida27@email.com;17920776478;SP;Ribeirão Preto;64;1962-09-22;2025-12-16;ATIVO
+28;Gabriela;Silva;Gabriela Silva;gabriela.silva28@email.com;17978406989;MG;Belo Horizonte;21;2005-12-11;2025-01-02;ATIVO
+29;Thiago;Carvalho;Thiago Carvalho;thiago.carvalho29@email.com;17979864260;SP;São José do Rio Preto;50;1976-02-28;2025-03-03;ATIVO
+30;Renan;Souza;Renan Souza;renan.souza30@email.com;17911003626;SP;São Paulo;33;1993-10-20;2025-01-20;ATIVO
+31;Tatiane;Lima;Tatiane Lima;tatiane.lima31@email.com;17935650176;SP;Mirassol;31;1995-11-23;2025-06-08;ATIVO
+32;Caio;Gomes;Caio Gomes;caio.gomes32@email.com;17913419256;SP;Mirassol;22;2004-01-15;2025-10-19;ATIVO
+33;Isabela;Oliveira;Isabela Oliveira;isabela.oliveira33@email.com;17972909480;BA;Salvador;33;1993-06-10;2025-03-15;ATIVO
+34;Vitor;Martins;Vitor Martins;vitor.martins34@email.com;17918024248;RJ;Rio de Janeiro;60;1966-09-10;2025-11-04;ATIVO
+35;Sofia;Santos;Sofia Santos;sofia.santos35@email.com;17946020613;PR;Londrina;35;1991-05-20;2025-04-23;ATIVO
+36;Yasmin;Carvalho;Yasmin Carvalho;yasmin.carvalho36@email.com;17937135391;SP;Votuporanga;34;1992-01-03;2025-11-14;ATIVO
+37;Karen;Martins;Karen Martins;karen.martins37@email.com;17957403166;SP;Mirassol;28;1998-12-15;2025-09-23;ATIVO
+38;Diego;Santos;Diego Santos;diego.santos38@email.com;17974158663;MS;Campo Grande;52;1974-01-27;2025-06-19;ATIVO
+39;Eduarda;Silva;Eduarda Silva;eduarda.silva39@email.com;17913796726;SP;São José do Rio Preto;40;1986-04-22;2025-04-22;ATIVO
+40;Samuel;Araujo;Samuel Araujo;samuel.araujo40@email.com;17903326769;GO;Goiânia;33;1993-03-26;2025-03-14;ATIVO
+41;Thiago;Costa;Thiago Costa;thiago.costa41@email.com;17921367172;SC;Florianópolis;60;1966-12-26;2025-04-09;ATIVO
+42;Diego;Rodrigues;Diego Rodrigues;diego.rodrigues42@email.com;17940962024;GO;Anápolis;32;1994-04-27;2025-08-12;ATIVO
+43;Caio;Souza;Caio Souza;caio.souza43@email.com;17953643924;SP;Mirassol;22;2004-05-12;2025-11-17;ATIVO
+44;Larissa;Nascimento;Larissa Nascimento;larissa.nascimento44@email.com;17905134794;SP;São José do Rio Preto;25;2001-05-06;2025-10-09;ATIVO
+45;Nicolas;Costa;Nicolas Costa;nicolas.costa45@email.com;17977388337;PR;Maringá;45;1981-10-17;2025-02-13;ATIVO
+46;Bruno;Ribeiro;Bruno Ribeiro;bruno.ribeiro46@email.com;17990010234;SP;São Paulo;52;1974-11-24;2025-12-24;ATIVO
+47;Nicolas;Santos;Nicolas Santos;nicolas.santos47@email.com;17940308572;MS;Três Lagoas;57;1969-06-22;2025-02-24;ATIVO
+48;Caio;Rodrigues;Caio Rodrigues;caio.rodrigues48@email.com;17989245317;SP;Ribeirão Preto;36;1990-09-05;2025-04-14;INATIVO
+49;Caio;Ribeiro;Caio Ribeiro;caio.ribeiro49@email.com;17938508907;BA;Feira de Santana;43;1983-09-27;2025-01-10;ATIVO
+50;Rodrigo;Lima;Rodrigo Lima;rodrigo.lima50@email.com;17968608612;MG;Uberlândia;47;1979-08-15;2025-11-07;ATIVO
+51;Sofia;Martins;Sofia Martins;sofia.martins51@email.com;17983115778;PR;Curitiba;23;2003-05-17;2025-11-21;ATIVO
+52;Henrique;Gomes;Henrique Gomes;henrique.gomes52@email.com;17982043803;SP;Catanduva;27;1999-01-02;2025-04-16;ATIVO
+53;Carla;Almeida;Carla Almeida;carla.almeida53@email.com;17966354180;SP;Ribeirão Preto;54;1972-04-23;2025-12-13;ATIVO
+54;Eduarda;Gomes;Eduarda Gomes;eduarda.gomes54@email.com;17962350830;RJ;Rio de Janeiro;45;1981-04-06;2025-12-17;ATIVO
+55;Henrique;Araujo;Henrique Araujo;henrique.araujo55@email.com;17979920257;GO;Anápolis;26;2000-08-22;2025-09-18;ATIVO
+56;Olívia;Lima;Olívia Lima;olívia.lima56@email.com;17963709724;SC;Florianópolis;53;1973-08-06;2025-12-28;ATIVO
+57;Beatriz;Souza;Beatriz Souza;beatriz.souza57@email.com;17959038700;GO;Anápolis;51;1975-08-21;2025-04-09;ATIVO
+58;João;Souza;João Souza;joão.souza58@email.com;17951410126;SP;Mirassol;52;1974-02-05;2025-03-08;ATIVO
+59;Letícia;Souza;Letícia Souza;letícia.souza59@email.com;17927760841;SP;Votuporanga;39;1987-09-15;2025-07-02;ATIVO
+60;Mariana;Araujo;Mariana Araujo;mariana.araujo60@email.com;17947212267;PR;Curitiba;19;2007-10-13;2025-08-01;ATIVO

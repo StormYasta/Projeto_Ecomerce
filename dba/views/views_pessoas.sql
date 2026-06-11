@@ -99,4 +99,3 @@ CREATE VIEW VW_colaboradores_completos AS
 			INNER JOIN dbo.tb_telefones_pessoas		AS Telefone	    ON Pessoa.id = Telefone.pessoa_id   AND Telefone.principal  = 1
 			INNER JOIN dbo.tb_enderecos_pessoas		AS Endereco	    ON Pessoa.id = Endereco.pessoa_id   AND Endereco.principal  = 1
 GO
-

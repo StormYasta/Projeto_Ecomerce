@@ -1,7 +1,0 @@
-﻿classe_ticket;limite_inferior;limite_superior;frequencia;frequencia_relativa
-R$ 0 a R$ 499;0;499.99;163;0.7409
-R$ 500 a R$ 999;500;999.99;30;0.1364
-R$ 1.000 a R$ 1.499;1000;1499.99;18;0.0818
-R$ 1.500 a R$ 1.999;1500;1999.99;5;0.0227
-R$ 2.000 a R$ 2.999;2000;2999.99;4;0.0182
-R$ 3.000 ou mais;3000;;0;0.0

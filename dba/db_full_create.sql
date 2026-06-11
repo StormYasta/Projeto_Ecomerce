@@ -34,7 +34,6 @@ CREATE TABLE TB_status_pessoa (
 INSERT INTO TB_status_pessoa (descricao) VALUES
 ('ATIVO'),
 ('INATIVO'),
-('SUSPENSO'),
 ('BLOQUEADO');
 SELECT * FROM TB_status_pessoa;
 GO
@@ -205,10 +204,10 @@ CREATE TABLE TB_funcoes_colaboradores (
 );
 
 INSERT INTO TB_funcoes_colaboradores (descricao, salario_base) VALUES
-('GERENTE',			5000.00),
-('ANALISTA',		3000.00),
-('DESENVOLVEDOR',	2500.00),
-('SUPORTE',			2000.00);
+('VENDEDOR',			2500.00),
+('GERENTE DE VENDAS',	4000.00),
+('MARKETEIRO',			3000.00),
+('SUPORTE',				3000.00);
 SELECT * FROM TB_funcoes_colaboradores;
 GO
 ------------------------------------------------------------------------------------------------------
@@ -363,6 +362,7 @@ CREATE TABLE TB_pedidos (
 	CONSTRAINT FK_TB_pedidos_status		FOREIGN KEY (status_id)		REFERENCES TB_status_pedido(id)
 );
 GO
+
 ------------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------------
 /*
@@ -598,7 +598,7 @@ SELECT  Produto.id			    AS IdProduto,
         Produto.nome			AS Nome,
         Produto.descricao		AS Descricao,
         Produto.preco_venda		AS PrecoVenda,
-        Produto.custo			AS Custo,
+        Produto.custo			AS PrecoCusto,
         Produto.estoque		    AS Estoque,
         Fornecedor.id			AS FornecedorId,
         Fornecedor.nome			AS FornecedorNome,
@@ -1515,6 +1515,16 @@ RETURN ( SELECT * FROM VW_pedidos WHERE PedidoId = @PedidoId );
 GO
 ------------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------------
+-- VIZUALIZAÇÂO DE PEDIDO POR ID DO CLIENTE
+CREATE FUNCTION	FN_Pedido_BYID_Cliente (
+	@ClienteId	BIGINT
+)
+RETURNS TABLE
+AS
+RETURN ( SELECT * FROM VW_pedidos WHERE ClienteId = @ClienteId);
+GO
+------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------
 -- ATUALIZAÇÃO DE PEDIDO
 CREATE PROCEDURE SP_update_pedido (
     @IdPedido BIGINT,
@@ -1594,66 +1604,56 @@ GO
 ------------------------------------------------------------------------------------------------------
 ----------------- CRIAÇÃO DAS PROCEDURES PARA PRODUTOS||PEDIDOS	-----------------
 ------------------------------------------------------------------------------------------------------
--- INSERT DE ITEM (PRODUTOS) EM PRODUTOS || PEDIDOS
 CREATE PROCEDURE SP_add_produto_pedido (
-    @Pedido_Id	BIGINT,
-    @Produto_Id BIGINT,
-    @Quantidade INT,
-	@Valor_pago DECIMAL(18,2)
+    @Pedido_Id   BIGINT,
+    @Produto_Id  BIGINT,
+    @Quantidade  INT,
+    @Valor_pago  DECIMAL(18,2)
 )
 AS
 BEGIN
     SET NOCOUNT ON;
-    BEGIN TRY
-		BEGIN TRANSACTION;
 
-        DECLARE @EstoqueAtual BIGINT;
+    BEGIN TRY
+        BEGIN TRANSACTION;
 
         -- validação de pedido
         IF NOT EXISTS (SELECT 1 FROM TB_pedidos WHERE id = @Pedido_Id)
-        THROW 50001, 'Pedido não encontrado', 1;
+            THROW 50001, 'Pedido não encontrado', 1;
 
         -- validação de produto
-        IF NOT EXISTS (SELECT 1 FROM TB_produtos WHERE id = @Produto_Id AND ativo = 1)
-        THROW 50001, 'Produto não encontrado ou inativo', 1;
+        IF NOT EXISTS (SELECT 1 
+                       FROM TB_produtos 
+                       WHERE id = @Produto_Id 
+                         AND ativo = 1)
+            THROW 50001, 'Produto não encontrado ou inativo', 1;
 
         -- validação de quantidade
         IF @Quantidade <= 0
-        THROW 50001, 'Quantidade inválida', 1;
+            THROW 50001, 'Quantidade inválida', 1;
 
-        -- validação de estoque
-        SELECT @EstoqueAtual = estoque
-        FROM TB_produtos
-        WHERE id = @Produto_Id;
-
-        IF @EstoqueAtual < @Quantidade
-        THROW 50001, 'Estoque insuficiente', 1;
-
-        -- valida duplicidade de produtos
+        -- valida duplicidade
         IF EXISTS (
-            SELECT 1 FROM TB_produtos_pedidos
-            WHERE produto_id = @Produto_Id AND pedido_id = @Pedido_Id
+            SELECT 1 
+            FROM TB_produtos_pedidos
+            WHERE produto_id = @Produto_Id 
+              AND pedido_id = @Pedido_Id
         )
-        THROW 50001, 'Produto já adicionado ao pedido, utilize SP_update_produto_pedido para alterar quantidades', 1;
+            THROW 50001, 'Produto já adicionado ao pedido', 1;
 
-        -- insert de produto
+        -- insert de item no pedido
         INSERT INTO TB_produtos_pedidos 
-			(produto_id, pedido_id, quantidade, valor_pago)
+            (produto_id, pedido_id, quantidade, valor_pago)
         VALUES 
-			(@Produto_Id, @Pedido_Id, @Quantidade, @Valor_pago);
+            (@Produto_Id, @Pedido_Id, @Quantidade, @Valor_pago);
 
-        -- baixa de estoque
-        UPDATE TB_produtos
-        SET estoque = estoque - @Quantidade
-        WHERE id = @Produto_Id;
-
+        COMMIT;
     END TRY
-
     BEGIN CATCH
-		IF @@TRANCOUNT > 0
-			ROLLBACK TRANSACTION;
-		THROW;
-	END CATCH
+        IF @@TRANCOUNT > 0
+            ROLLBACK;
+        THROW;
+    END CATCH
 END
 GO
 ------------------------------------------------------------------------------------------------------
@@ -1675,72 +1675,79 @@ RETURN (
     
 	WHERE Pedido.pedido_id = @Pedido_Id
 );
+GO------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------
+-- LISTAR ITENS DE CADA PEDIDO E COM FILTRO DE ID DE CLIENTE
+CREATE FUNCTION FN_view_produtos_pedido_BYID_Cliente (
+    @Pedido_Id	BIGINT,
+	@Cliente_Id BIGINT
+)
+RETURNS TABLE
+AS
+RETURN (
+    SELECT	Item.produto_id,
+			Produto.nome,
+			Item.quantidade,
+	        Item.valor_pago
+
+    FROM TB_produtos_pedidos Item
+	INNER JOIN TB_pedidos  Pedido   ON Pedido.id = Item.pedido_id
+    INNER JOIN TB_produtos Produto	ON Produto.id = Item.produto_id
+	INNER JOIN TB_Clientes Cliente	ON Cliente.pessoa_id = Pedido.cliente_id
+
+	WHERE Pedido.id = @Pedido_Id AND Cliente.pessoa_id = @Cliente_Id
+);
 GO
 ------------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------------
 -- UPDATE DE PRODUTOS || PEDIDOS
 CREATE PROCEDURE SP_update_produto_pedido (
-    @Pedido_Id		BIGINT,
-    @Produto_Id		BIGINT,
+    @Pedido_Id      BIGINT,
+    @Produto_Id     BIGINT,
     @QuantidadeNova INT
 )
 AS
 BEGIN
     SET NOCOUNT ON;
+
     BEGIN TRY
-		BEGIN TRANSACTION;
-    
-        DECLARE @QuantidadeAtual	INT;	-- Quantidade do produto que atualmente está no pedido
-        DECLARE @EstoqueAtual		BIGINT;	-- Estoque para a quantidade atual do produto
-        DECLARE @EstoqueOriginal	BIGINT;	-- Estoque cheio, sem considerar a quantidade atual
+        BEGIN TRANSACTION;
 
-		-- valida status do pedido
-		IF EXISTS (	SELECT	1
+        -- valida pedido ativo
+        IF EXISTS (
+            SELECT 1
+            FROM TB_pedidos P
+            INNER JOIN TB_status_pedido S ON S.id = P.status_id
+            WHERE P.id = @Pedido_Id
+              AND S.descricao IN ('CANCELADO', 'ENTREGUE')
+        )
+            THROW 50001, 'Pedido não pode ser alterado', 1;
 
-					FROM	TB_pedidos Pedido 
-							INNER JOIN TB_status_pedido Status ON Status.id = Pedido.status_id
-					WHERE	Pedido.id = @Pedido_Id AND Status.descricao IN ('CANCELADO', 'ENTREGUE'))
+        -- valida item existe
+        IF NOT EXISTS (
+            SELECT 1
+            FROM TB_produtos_pedidos
+            WHERE pedido_id = @Pedido_Id
+              AND produto_id = @Produto_Id
+        )
+            THROW 50001, 'Item não encontrado no pedido', 1;
 
-		THROW 50003, 'Pedido não pode ser alterado', 1;
-
-        -- valida produto
-        IF NOT EXISTS (SELECT 1 FROM TB_produtos_pedidos WHERE produto_id = @Produto_Id AND pedido_id = @Pedido_Id)
-        THROW 50001, 'Item não encontrado no pedido', 1;
-
-		-- validade quantidade
+        -- valida quantidade
         IF @QuantidadeNova <= 0
-        THROW 50001, 'Quantidade inválida', 1;
+            THROW 50001, 'Quantidade inválida', 1;
 
-		-- validade quantidade nova com o estoque
-        SELECT	@QuantidadeAtual = quantidade
-        FROM	TB_produtos_pedidos
-        WHERE	produto_id = @Produto_Id AND pedido_id = @Pedido_Id;
-
-		SELECT	@EstoqueAtual = estoque
-		FROM	TB_produtos WITH (UPDLOCK, ROWLOCK)
-		WHERE	id = @Produto_Id
-
-		SET @EstoqueOriginal = @EstoqueAtual + @QuantidadeAtual
-
-		IF (@EstoqueOriginal < @QuantidadeNova)
-		THROW 50002, 'Estoque insulficiente', 1;
-
-        -- update item
+        -- update de itens do pedido
         UPDATE TB_produtos_pedidos
         SET quantidade = @QuantidadeNova
-        WHERE produto_id = @Produto_Id AND pedido_id = @Pedido_Id;
+        WHERE pedido_id = @Pedido_Id
+          AND produto_id = @Produto_Id;
 
-        -- ajuste de estoque
-        UPDATE TB_produtos
-        SET estoque = @EstoqueOriginal - @QuantidadeNova
-        WHERE id = @Produto_Id;
-
+        COMMIT;
     END TRY
-
     BEGIN CATCH
-		IF @@TRANCOUNT > 0
-			ROLLBACK TRANSACTION;
-		THROW;
+        IF @@TRANCOUNT > 0
+            ROLLBACK;
+        THROW;
     END CATCH
 END
 GO
@@ -1748,41 +1755,36 @@ GO
 ------------------------------------------------------------------------------------------------------
 -- REMOVE DE PRODUTOS EM PRODUTOS||PEDIDOS
 CREATE PROCEDURE SP_remove_produto_pedido (
-    @Pedido_Id BIGINT,
+    @Pedido_Id  BIGINT,
     @Produto_Id BIGINT
 )
 AS
 BEGIN
     SET NOCOUNT ON;
+
     BEGIN TRY
-		BEGIN TRANSACTION;
+        BEGIN TRANSACTION;
 
-        DECLARE @Quantidade INT;
-
-		-- validação do produto
-		IF NOT EXISTS (SELECT 1 FROM TB_produtos_pedidos WHERE pedido_id = @Pedido_Id AND produto_id = @Produto_Id)
-		THROW 50002, 'Produto não encontrato no pedido', 1;
-
-		-- captura da quantidade
-        SELECT	@Quantidade = quantidade
-        FROM	TB_produtos_pedidos
-        WHERE	produto_id = @Produto_Id AND pedido_id = @Pedido_Id;
+        -- valida existência do item no pedido
+        IF NOT EXISTS (
+            SELECT 1 
+            FROM TB_produtos_pedidos 
+            WHERE pedido_id = @Pedido_Id 
+              AND produto_id = @Produto_Id
+        )
+            THROW 50001, 'Produto não encontrado no pedido', 1;
 
         -- remoção do item
         DELETE FROM TB_produtos_pedidos
-        WHERE produto_id = @Produto_Id AND pedido_id = @Pedido_Id;
+        WHERE pedido_id = @Pedido_Id 
+          AND produto_id = @Produto_Id;
 
-        -- ajuste do estoque
-        UPDATE TB_produtos
-        SET estoque = estoque + @Quantidade
-        WHERE id = @Produto_Id;
-
+        COMMIT;
     END TRY
-
     BEGIN CATCH
-		IF @@TRANCOUNT > 0
-			ROLLBACK TRANSACTION;
-		THROW;
+        IF @@TRANCOUNT > 0
+            ROLLBACK;
+        THROW;
     END CATCH
 END
 GO
@@ -1962,6 +1964,98 @@ END
 GO
 
 -- ============================================================
+-- Subpasta: triggers
+-- ============================================================
+
+-- ------------------------------------------------------------
+-- Arquivo: triggers_produtos.sql
+-- ------------------------------------------------------------
+USE dev_projeto_fatec_ecomerce
+GO
+
+-- TRIGGER para baixar o estoque do produto quando um pedido for inserido, e impedir que o estoque fique negativo.
+CREATE TRIGGER TR_produtos_pedidos_insert ON TB_produtos_pedidos 
+AFTER INSERT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    UPDATE Produto
+    SET Produto.estoque = Produto.estoque - inserted.quantidade
+    FROM TB_produtos Produto
+    INNER JOIN inserted ON inserted.produto_id = Produto.id;
+    
+    IF EXISTS (
+        SELECT 1
+        FROM TB_produtos Produto
+        INNER JOIN inserted ON inserted.produto_id = Produto.id
+        WHERE Produto.estoque < 0
+    )
+    BEGIN
+        ROLLBACK TRANSACTION;
+        THROW 50001, 'Vai da não', 1;
+    END
+END
+GO
+
+-- TRIGGER para aumentar o estoque do produto quando um pedido for deletado.
+CREATE TRIGGER TR_produtos_pedidos_delete ON TB_produtos_pedidos
+AFTER DELETE
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    UPDATE Produto
+    SET Produto.estoque = Produto.estoque + deleted.quantidade
+    FROM TB_produtos Produto
+    INNER JOIN deleted ON deleted.produto_id = Produto.id;
+
+    IF EXISTS (
+        SELECT 1
+        FROM TB_produtos Produto
+        INNER JOIN deleted ON deleted.produto_id = Produto.id
+        WHERE Produto.estoque < 0
+    )
+    BEGIN
+        ROLLBACK TRANSACTION;
+        THROW 50001, 'Alguma coisa muito ruim aconteceu para ter caido aqui...', 1;
+    END
+END
+GO
+
+-- TRIGGER para ajustar o estoque do produto quando um pedido for atualizado
+CREATE TRIGGER TR_produtos_pedidos_update
+ON TB_produtos_pedidos
+AFTER UPDATE
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    -- volta para o estoque antigo
+    UPDATE Produto
+    SET Produto.estoque = Produto.estoque + deleted.quantidade
+    FROM TB_produtos Produto
+    INNER JOIN deleted ON deleted.produto_id = Produto.id;
+
+    -- atualiza para o estoque novo
+    UPDATE Produto
+    SET Produto.estoque = Produto.estoque - inserted.quantidade
+    FROM TB_produtos Produto
+    INNER JOIN inserted ON inserted.produto_id = Produto.id;
+
+    IF EXISTS (
+        SELECT 1
+        FROM TB_produtos
+        WHERE estoque < 0
+    )
+    BEGIN
+        ROLLBACK TRANSACTION;
+        THROW 50001, 'Vai da não', 1;
+    END
+END
+GO
+
+-- ============================================================
 -- Subpasta: user
 -- ============================================================
 
@@ -1990,7 +2084,7 @@ BEGIN
 	INSERT INTO TB_pessoas (nome, sobrenome, cpf, status_id, data_nascimento) VALUES ('MASTER', 'BOY', '99999999999', 1, '0001-01-01')
 	SET @id = SCOPE_IDENTITY()
 
-	INSERT INTO TB_usuarios (pessoa_id, usuario_role, usuario_login, senha_hash) VALUES (@id, 1, 'master', '##fatec##')
+	INSERT INTO TB_usuarios (pessoa_id, usuario_role, usuario_login, senha_hash) VALUES (@id, 1, 'master', '$2a$10$PKJ2vv2TN5o2XBYIiu23ae7TpjyfgP/7yFsVNV7I2WUIZDUcdIO8C')
 END
 GO
 EXEC dbo.SP_Create_Master_User
@@ -2003,14 +2097,3 @@ GO
 -- RESTORE DATABASE dev_projeto_fatec_ecomerce
 -- FROM DISK = 'C:\Backup\bkp.bak';
 
-
-select * from VW_clientes_completos
-select * from VW_colaboradores_completos
-select * from VW_fornecedores
-select * from VW_produtos
-
-select * from TB_pessoas
-
-select * from TB_usuarios
-
-use dev_projeto_fatec_ecomerce

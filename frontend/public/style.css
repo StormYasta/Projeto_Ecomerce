@@ -1,0 +1,371 @@
+:root {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #222;
+    background: #f3f5f8;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+}
+
+.topbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 24px;
+    background: #1f4b8b;
+    color: #fff;
+}
+
+.container {
+    display: flex;
+    min-height: 100vh;
+}
+
+.sidebar {
+    width: 240px;
+    background: #111827;
+    color: white;
+    padding: 20px;
+}
+
+.sidebar h3 {
+    margin-top: 0;
+    font-size: 16px;
+    margin-bottom: 15px;
+}
+
+.nav-item {
+    display: block;
+    padding: 10px;
+    margin-bottom: 8px;
+    background: #1f2937;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.nav-item:hover {
+    background: #374151;
+}
+
+.sidebar a {
+    text-decoration: none;
+    color: #5d8bd0;
+}
+
+.sidebar a:visited {
+    color: #5d8bd0;
+    text-decoration: none;
+}
+
+.content {
+    flex: 1;
+    padding: 20px;
+}
+
+.card {
+    background: white;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.brand {
+    font-size: 1.3rem;
+    font-weight: 700;
+}
+
+.nav-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.nav-bar button {
+    border: none;
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    cursor: pointer;
+    background: #fff;
+    color: #1f4b8b;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.nav-bar button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+}
+
+.page {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+    padding: 24px;
+    max-width: 1240px;
+    margin: 0 auto;
+}
+
+.panel {
+    display: none;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+    padding: 24px;
+}
+
+.panel.active {
+    display: block;
+}
+
+.entity-form {
+    display: grid;
+    gap: 16px;
+}
+
+.field-row {
+    display: grid;
+    gap: 6px;
+}
+
+.field-row label {
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+.field-row input,
+.field-row select,
+.field-row textarea {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid #cbd5e1;
+    border-radius: 12px;
+    background: #f8fafc;
+    font-size: 1rem;
+}
+
+button[type="submit"],
+.small-button,
+.secondary-button {
+    border: none;
+    padding: 12px 16px;
+    border-radius: 12px;
+    background: #1f4b8b;
+    color: #fff;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s ease;
+}
+
+button[type="submit"]:hover,
+.small-button:hover,
+.secondary-button:hover {
+    background: #163b6d;
+}
+
+.small-button {
+    font-size: 0.85rem;
+    width: auto;
+}
+
+.secondary-button {
+    min-width: 110px;
+}
+
+
+.list-group {
+    display: grid;
+    gap: 12px;
+    padding: 16px;
+    border-radius: 16px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+}
+
+.group-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+}
+
+.list-item {
+    display: grid;
+    gap: 10px;
+    padding: 14px;
+    border-radius: 14px;
+    background: #fff;
+    border: 1px solid #dae1e7;
+}
+
+.list-item .remove-button {
+    justify-self: flex-end;
+    border: none;
+    background: transparent;
+    color: #d32f2f;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.output-panel {
+    max-width: 1240px;
+    margin: 0 auto 40px;
+    padding: 24px;
+    background: #1e293b;
+    color: #e2e8f0;
+    border-radius: 16px;
+    box-shadow: 0 12px 30px rgba(15, 23, 42, 0.12);
+}
+
+.output-panel h3 {
+    margin-top: 0;
+}
+
+#output {
+    background: #0f172a;
+    color: #f8fafc;
+    padding: 18px;
+    border-radius: 14px;
+    overflow-x: auto;
+    min-height: 180px;
+}
+
+.view-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 18px;
+}
+
+.view-content {
+    display: grid;
+    gap: 18px;
+}
+
+.view-section {
+    padding: 18px;
+    border-radius: 16px;
+    background: #f8fafc;
+    border: 1px solid #d1d9e6;
+}
+
+.view-section h3 {
+    margin-top: 0;
+}
+
+.record-card {
+    padding: 14px;
+    border-radius: 14px;
+    background: #fff;
+    border: 1px solid #d9e2ec;
+    margin-bottom: 12px;
+}
+
+.record-row {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    gap: 10px;
+    padding: 4px 0;
+}
+
+.record-label {
+    font-weight: 700;
+    color: #1f2937;
+}
+
+.record-value {
+    color: #334155;
+}
+
+.empty-state {
+    font-size: 1rem;
+    color: #475569;
+}
+
+@media (min-width: 1100px) {
+    .page {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 850px) {
+    .nav-bar {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+/* ===== NAVBAR (PADRÃO DO SISTEMA) ===== */
+
+.crud-navbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 16px 24px;
+    background: #1f4b8b;
+    color: #fff;
+}
+
+.crud-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+}
+
+/* container dos links */
+.crud-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+/* links estilo botão igual nav-bar do seu sistema */
+.crud-links a {
+    border: none;
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+
+    cursor: pointer;
+    background: #fff;
+    color: #1f4b8b;
+
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.2s ease;
+}
+
+/* hover igual botões principais */
+.crud-links a:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+    background: #f1f5f9;
+}
+
+/* responsivo igual nav-bar */
+@media (max-width: 850px) {
+    .crud-navbar {
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .crud-links {
+        justify-content: center;
+        width: 100%;
+    }
+}

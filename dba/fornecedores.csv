@@ -1,9 +1,0 @@
-﻿fornecedor_id;fornecedor;cnpj;email;telefone;ativo;descricao
-1;TechDistribuidora Brasil;11222333000101;vendas@techdistribuidora.com.br;1732211001;1;Distribuidora de periféricos e componentes
-2;Mega Componentes;22444555000102;comercial@megacomponentes.com.br;1732211002;1;Componentes para computadores
-3;Prime Eletrônicos;33666777000103;atendimento@primeeletronicos.com.br;1732211003;1;Eletrônicos e acessórios
-4;InfoMax Atacado;44888999000104;pedidos@infomaxatacado.com.br;1732211004;1;Atacado de informática
-5;FastHardware;55000111000105;vendas@fasthardware.com.br;1732211005;1;Hardware gamer e profissional
-6;Connect Rede;66111222000106;comercial@connectrede.com.br;1732211006;1;Equipamentos de rede
-7;OfficeTech Supply;77222333000107;contato@officetech.com.br;1732211007;1;Produtos para escritório e home office
-8;Brasil Monitores;88333444000108;vendas@brasilmonitores.com.br;1732211008;1;Monitores e telas

@@ -27,7 +27,6 @@ CREATE TABLE TB_status_pessoa (
 INSERT INTO TB_status_pessoa (descricao) VALUES
 ('ATIVO'),
 ('INATIVO'),
-('SUSPENSO'),
 ('BLOQUEADO');
 SELECT * FROM TB_status_pessoa;
 GO
@@ -198,10 +197,10 @@ CREATE TABLE TB_funcoes_colaboradores (
 );
 
 INSERT INTO TB_funcoes_colaboradores (descricao, salario_base) VALUES
-('GERENTE',			5000.00),
-('ANALISTA',		3000.00),
-('DESENVOLVEDOR',	2500.00),
-('SUPORTE',			2000.00);
+('VENDEDOR',			2500.00),
+('GERENTE DE VENDAS',	4000.00),
+('MARKETEIRO',			3000.00),
+('SUPORTE',				3000.00);
 SELECT * FROM TB_funcoes_colaboradores;
 GO
 ------------------------------------------------------------------------------------------------------

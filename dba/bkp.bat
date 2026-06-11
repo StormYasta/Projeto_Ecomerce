@@ -1,1 +1,0 @@
-sqlcmd -S 192.168.23.221 -U projeto_fatec -P ##fatec## -C -Q "DECLARE @Data VARCHAR(8), @Arquivo NVARCHAR(200), @SQL NVARCHAR(MAX); SET @Data=CONVERT(VARCHAR,GETDATE(),112); SET @Arquivo='C:\Backup\bkp.bak'; SET @SQL='BACKUP DATABASE [dev_projeto_fatec_ecomerce] TO DISK = ''' + @Arquivo + ''' WITH COMPRESSION'; EXEC(@SQL);"
